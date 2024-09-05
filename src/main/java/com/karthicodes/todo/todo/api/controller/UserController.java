@@ -1,30 +1,51 @@
 package com.karthicodes.todo.todo.api.controller;
 
-import java.util.Optional;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.karthicodes.todo.todo.UserRepository;
 import com.karthicodes.todo.todo.api.model.User;
-import com.karthicodes.todo.todo.service.UserService;
+
 @RestController
+@RequestMapping("/api")
+@CrossOrigin
 public class UserController {
 
-    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    @GetMapping("/")
+    public List<User> GetUsers() {
+        return userRepository.findAll();
     }
-
-    @GetMapping("/user")
-    public User getUser(@RequestParam Integer id) {
-        Optional<User> user = userService.getUser(id);   
-        if(user.isPresent()) {
-            return (User) user.get();
-        }
-        return null;
+    @GetMapping("/{id}")
+    public User GetUser(@PathVariable String id) {
+        return userRepository.findById(id).orElse(null);
     }
-    
+    @PostMapping("/")
+    public User PostUser(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+    @PutMapping("/")
+    public User PutUser(@RequestBody User user) {
+        User oldUser = userRepository.findById(user.getId()).orElse(null);
+        oldUser.setName(user.getName());
+        return userRepository.save(oldUser);
+    }
+    @DeleteMapping("/{id}")
+    public String DeleteUser(@PathVariable String id) {
+        userRepository.deleteById(id);
+        return id;
+    }
 }
  

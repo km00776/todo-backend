@@ -1,25 +1,20 @@
 package com.karthicodes.todo.todo.api.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Data;
+
+
+
+@Document
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class User {
-    private int id;
+    @Id
+    private String id;
     private String name;
-    
-    public User(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    
 }
