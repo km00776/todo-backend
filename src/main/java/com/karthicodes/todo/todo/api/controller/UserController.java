@@ -32,16 +32,16 @@ public class UserController {
     public User GetUser(@PathVariable String id) {
         return userRepository.findById(id).orElse(null);
     }
-    @PostMapping("/")
+    @PostMapping("/signUp")
     public User PostUser(@RequestBody User user) {
         return userRepository.save(user);
     }
-    @PutMapping("/")
-    public User PutUser(@RequestBody User user) {
-        User oldUser = userRepository.findById(user.getId()).orElse(null);
-        oldUser.setName(user.getName());
-        return userRepository.save(oldUser);
-    }
+    // @PutMapping("/")
+    // public User PutUser(@RequestBody User user) {
+    //     User oldUser = userRepository.findById(user.getId()).orElse(null);
+    //     oldUser.setName(user.getName());
+    //     return userRepository.save(oldUser);
+    // }
     @DeleteMapping("/{id}")
     public String DeleteUser(@PathVariable String id) {
         userRepository.deleteById(id);
